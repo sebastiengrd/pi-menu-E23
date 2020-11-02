@@ -4,37 +4,13 @@ import tkinter.constants as TkC
 import os
 import subprocess
 import sys
-from tkinter import Tk, Frame, Button, Label, PhotoImage
+from tkinter import Tk, Frame, Label, PhotoImage
 from math import sqrt, floor, ceil
 from subprocess import Popen
 import time
 import json
 from View import *
-
-
-class FlatButton(Button):
-    def __init__(self, master=None, cnf=None, **kw):
-        Button.__init__(self, master, cnf, **kw)
-
-        self.config(
-            compound=TkC.TOP,
-            relief=TkC.FLAT,
-            bd=0,
-            bg="#b91d47",  # dark-red
-            fg="white",
-            activebackground="#b91d47",  # dark-red
-            activeforeground="white",
-            highlightthickness=0
-        )
-
-    def set_color(self, color):
-        self.configure(
-            bg=color,
-            fg="white",
-            activebackground=color,
-            activeforeground="white"
-        )
-
+from FlatButton import *
 
 class PiMenu(Frame):
     framestack = []
@@ -99,106 +75,6 @@ class PiMenu(Frame):
         """
         return self.lastinit != os.path.getmtime(self.path + '/pimenu.yaml')
 
-    def show_items(self, items, upper=None):
-        """
-        Creates a new page on the stack, automatically adds a back button when there are
-        pages on the stack already
-
-        :param items: list the items to display
-        :param upper: list previous levels' ids
-        :return: None
-        """
-        if upper is None:
-            upper = []
-        num = 0
-        # create a new frame
-        wrap = Frame(self, bg="black")
-
-        if len(self.framestack):
-            self.hide_top()
-            # when there were previous frames, hide the top one and add a back button for the new one
-            back = FlatButton(
-                wrap,
-                text='back…',
-                image=self.get_icon("arrow.left"),
-                command=self.go_back,
-            )
-            back.set_color("#00a300")  # green
-            back.grid(row=0, column=0, padx=1, pady=1,
-                      sticky=TkC.W + TkC.E + TkC.N + TkC.S)
-            num += 1
-
-        # add the new frame to the stack and display it
-        self.framestack.append(wrap)
-        self.show_top()
-
-        # calculate tile distribution
-        allitems = len(items) + num
-        rows = floor(sqrt(allitems))
-        cols = ceil(allitems / rows)
-
-        # make cells autoscale
-        for x in range(int(cols)):
-            wrap.columnconfigure(x, weight=1)
-        for y in range(int(rows)):
-            wrap.rowconfigure(y, weight=1)
-
-        # display all given buttons
-        for item in items:
-            act = upper + [item['name']]
-
-            if 'icon' in item:
-                image = self.get_icon(item['icon'])
-            else:
-                image = self.get_icon('scrabble.' + item['label'][0:1].lower())
-
-            btn = FlatButton(
-                wrap,
-                text=item['label'],
-                image=image
-            )
-
-            if 'items' in item:
-                # this is a deeper level
-                btn.configure(command=lambda act=act, item=item: self.show_items(item['items'], act),
-                              text=item['label'] + '…')
-                btn.set_color("#2b5797")  # dark-blue
-            else:
-                # this is an action
-                btn.configure(command=lambda act=act: self.go_action(act), )
-
-            if 'color' in item:
-                btn.set_color(item['color'])
-
-            # add buton to the grid
-            btn.grid(
-                row=int(floor(num / cols)),
-                column=int(num % cols),
-                padx=1,
-                pady=1,
-                sticky=TkC.W + TkC.E + TkC.N + TkC.S
-            )
-            num += 1
-
-    def get_icon(self, name):
-        """
-        Loads the given icon and keeps a reference
-
-        :param name: string
-        :return:
-        """
-        if name in self.icons:
-            return self.icons[name]
-
-        ico = self.path + '/ico/' + name + '.png'
-        if not os.path.isfile(ico):
-            ico = self.path + '/ico/' + name + '.gif'
-            if not os.path.isfile(ico):
-                ico = self.path + '/ico/cancel.gif'
-
-        self.icons[name] = PhotoImage(file=ico)
-        # return self.icons[name]
-        return ico
 
     def hide_top(self):
         """
@@ -236,11 +112,11 @@ class PiMenu(Frame):
         then reinitialize everything
         :return:
         """
-        if self.has_config_changed():
-            self.initialize()
-        else:
-            self.destroy_top()
-            self.show_top()
+        # if self.has_config_changed():
+        #     self.initialize()
+        # else:
+        self.destroy_top()
+        self.show_top()
 
 
 def main():
