@@ -1,7 +1,11 @@
 from tkinter import Button
 import tkinter.constants as TkC
 
+
 class FlatButton(Button):
+    """ 
+    Custom button created from the tkinter Button class
+    """
     def __init__(self, master=None, cnf=None, **kw):
         Button.__init__(self, master, cnf, **kw)
 

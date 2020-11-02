@@ -43,15 +43,12 @@ class PiMenu(Frame):
         :return: None
         """
         subprocess.call(self.path + "/BruyerewifiagreeCurl.sh")
-        # with open(self.path + '/pimenu.yaml', 'r') as f:
-        #     doc = yaml.load(f)
+
         # self.lastinit = os.path.getmtime(self.path + '/pimenu.yaml')
 
         if len(self.framestack):
             self.destroy_all()
             self.destroy_top()
-
-        # self.show_items(doc)
 
         # create initial view
         self.pushNewView(self.defaultViewName)

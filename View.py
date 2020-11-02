@@ -4,6 +4,9 @@ from pimenu import FlatButton
 from math import floor, sqrt, ceil
 
 class View:
+    """
+    Easily configure a tkinter Frame with buttons inside them
+    """
     def __init__(self, viewConfig, piMenu):
         self.frame = Frame(piMenu)
         self.images = {}
@@ -11,7 +14,7 @@ class View:
         self.initialize(viewConfig)
 
 
-    def initialize(self, viewConfig):
+    def initialize(self, viewConfig):        
         # calculate tile distribution
         itemsNumber = len(viewConfig["buttons"])
         rows = floor(sqrt(itemsNumber))
@@ -20,13 +23,17 @@ class View:
         # make cells autoscale
         for x in range(int(cols)):
             self.frame.columnconfigure(x, weight=1)
+        
         for y in range(int(rows)):
             self.frame.rowconfigure(y, weight=1)
 
+        #initialize each buttons in the frame
         btnCount = 0
         for button in viewConfig["buttons"]:
+            # import the image 
             self.images[button["icon"]] = PhotoImage(file=button["icon"])
 
+            # Initialize
             b = FlatButton(
                 self.frame,
                 text=button["label"],
@@ -34,7 +41,10 @@ class View:
                 command=lambda view=button["goToView"] : self.btnPressed(view)
             )
 
+            # if we want to configure more options
             # b.configure(command=lambda act=act, item=item: self.show_items(item['items'], act)) # piMenu show view function
+
+            # Initialize the color of the button
             b.set_color(button["color"])
 
             # add buton to the grid
@@ -48,13 +58,14 @@ class View:
 
             btnCount += 1
 
-    def btnPressed(self, view):
-        if(view == "Back"):
+    # When a button is pressed, this function is called
+    def btnPressed(self, action):
+        if(action == "Back"):
             self.piMenu.go_back()
-        elif(view == "Exit"):
+        elif(action == "Exit"):
             exit(1)
         else:
-            self.piMenu.pushNewView(view)
+            self.piMenu.pushNewView(action)
 
 
     def getFrame(self):
