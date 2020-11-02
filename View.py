@@ -3,12 +3,12 @@ from tkinter import Frame, PhotoImage
 from pimenu import FlatButton
 from math import floor, sqrt, ceil
 
-class View:
+class View(Frame):
     """
     Easily configure a tkinter Frame with buttons inside them
     """
     def __init__(self, viewConfig, piMenu):
-        self.frame = Frame(piMenu)
+        super().__init__(piMenu)
         self.images = {}
         self.piMenu = piMenu
         self.initialize(viewConfig)
@@ -22,10 +22,10 @@ class View:
 
         # make cells autoscale
         for x in range(int(cols)):
-            self.frame.columnconfigure(x, weight=1)
+            self.columnconfigure(x, weight=1)
         
         for y in range(int(rows)):
-            self.frame.rowconfigure(y, weight=1)
+            self.rowconfigure(y, weight=1)
 
         #initialize each buttons in the frame
         btnCount = 0
@@ -35,7 +35,7 @@ class View:
 
             # Initialize
             b = FlatButton(
-                self.frame,
+                self,
                 text=button["label"],
                 image=self.images[button["icon"]],
                 command=lambda view=button["goToView"] : self.btnPressed(view)
@@ -66,7 +66,3 @@ class View:
             exit(1)
         else:
             self.piMenu.pushNewView(action)
-
-
-    def getFrame(self):
-        return self.frame

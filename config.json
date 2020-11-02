@@ -25,6 +25,10 @@
       ]
     },
     "musicPlayer": {
+      "implementApp": "musicApp"
+      
+    },
+    "videoPlayer": {
       "implementApp": null,
       "buttons" : [
         {
@@ -46,9 +50,6 @@
           "goToView": "videoPlayer"
         }
       ]
-    },
-    "videoPlayer": {
-      "implementApp": "musicApp"
     }
   }
 }

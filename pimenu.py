@@ -11,6 +11,9 @@ import time
 import json
 from View import *
 from FlatButton import *
+from MusicView import *
+
+from pygame import mixer
 
 class PiMenu(Frame):
     framestack = []
@@ -45,6 +48,11 @@ class PiMenu(Frame):
         subprocess.call(self.path + "/BruyerewifiagreeCurl.sh")
 
         # self.lastinit = os.path.getmtime(self.path + '/pimenu.yaml')
+        
+        # initialize audio
+        mixer.init() 
+        mixer.music.load("music.wav")
+        # mixer.music.play() 
 
         if len(self.framestack):
             self.destroy_all()
@@ -54,13 +62,20 @@ class PiMenu(Frame):
         self.pushNewView(self.defaultViewName)
 
 
+
+
     def pushNewView(self, name):
         if len(self.framestack):
             self.hide_top()
         
         viewConfig = self.views[name]
 
-        self.framestack.append(View(viewConfig, self))
+        if(viewConfig["implementApp"] == "musicApp"):
+            self.framestack.append(MusicView(self))
+        else:
+            self.framestack.append(View(viewConfig, self))
+        
+        
         self.show_top()
 
 
@@ -78,21 +93,21 @@ class PiMenu(Frame):
         hide the top page
         :return:
         """
-        self.framestack[len(self.framestack) - 1].getFrame().pack_forget()
+        self.framestack[len(self.framestack) - 1].pack_forget()
 
     def show_top(self):
         """
         show the top page
         :return:
         """
-        self.framestack[len(self.framestack) - 1].getFrame().pack(fill=TkC.BOTH, expand=1)
+        self.framestack[len(self.framestack) - 1].pack(fill=TkC.BOTH, expand=1)
 
     def destroy_top(self):
         """
         destroy the top page
         :return:
         """
-        self.framestack[len(self.framestack) - 1].getFrame().destroy()
+        self.framestack[len(self.framestack) - 1].destroy()
         self.framestack.pop()
 
     def destroy_all(self):
