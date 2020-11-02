@@ -7,13 +7,9 @@ import sys
 from tkinter import Tk, Frame, Button, Label, PhotoImage
 from math import sqrt, floor, ceil
 from subprocess import Popen
-import yaml
 import time
-from pynput.keyboard import Key, Controller
 import json
 from View import *
-
-keyboard = Controller()
 
 
 class FlatButton(Button):
@@ -86,6 +82,9 @@ class PiMenu(Frame):
 
 
     def pushNewView(self, name):
+        if len(self.framestack):
+            self.hide_top()
+        
         viewConfig = self.views[name]
 
         self.framestack.append(View(viewConfig, self))

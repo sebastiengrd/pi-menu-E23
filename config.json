@@ -5,14 +5,8 @@
       "implementApp": null,
       "buttons": [
         {
-          "label": "Back",
-          "color": "#3c9bc4",
-          "icon": "ico/arrow.left.gif",
-          "goToView": null
-        },
-        {
           "label": "Music",
-          "color": "#2ba887",
+          "color": "#3c9bc4",
           "icon": "ico/music.gif",
           "goToView": "musicPlayer"
         },
@@ -21,11 +15,37 @@
           "color": "#3c9bc4",
           "icon": "ico/ambulance.gif",
           "goToView": "videoPlayer"
+        },
+        {
+          "label": "Exit",
+          "color": "#2ba887",
+          "icon": "ico/stop.gif",
+          "goToView": "Exit"
         }
       ]
     },
     "musicPlayer": {
-      "implementApp": "musicApp"
+      "implementApp": null,
+      "buttons" : [
+        {
+          "label": "Back",
+          "color": "#3c9bc4",
+          "icon": "ico/arrow.left.gif",
+          "goToView": "Back"
+        },
+        {
+          "label": "Second button",
+          "color": "#2ba887",
+          "icon": "ico/music.gif",
+          "goToView": "musicPlayer"
+        },
+        {
+          "label": "third button",
+          "color": "#3c9bc4",
+          "icon": "ico/ambulance.gif",
+          "goToView": "videoPlayer"
+        }
+      ]
     },
     "videoPlayer": {
       "implementApp": "musicApp"

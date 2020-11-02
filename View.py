@@ -30,7 +30,8 @@ class View:
             b = FlatButton(
                 self.frame,
                 text=button["label"],
-                image=self.images[button["icon"]]
+                image=self.images[button["icon"]],
+                command=lambda view=button["goToView"] : self.btnPressed(view)
             )
 
             # b.configure(command=lambda act=act, item=item: self.show_items(item['items'], act)) # piMenu show view function
@@ -46,6 +47,14 @@ class View:
             )
 
             btnCount += 1
+
+    def btnPressed(self, view):
+        if(view == "Back"):
+            self.piMenu.go_back()
+        elif(view == "Exit"):
+            exit(1)
+        else:
+            self.piMenu.pushNewView(view)
 
 
     def getFrame(self):
