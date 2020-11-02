@@ -1,0 +1,34 @@
+{
+  "defaultView": "mainMenu",
+  "views": {
+    "mainMenu": {
+      "implementApp": null,
+      "buttons": [
+        {
+          "label": "Back",
+          "color": "#3c9bc4",
+          "icon": "ico/arrow.left.gif",
+          "goToView": null
+        },
+        {
+          "label": "Music",
+          "color": "#2ba887",
+          "icon": "ico/music.gif",
+          "goToView": "musicPlayer"
+        },
+        {
+          "label": "Video",
+          "color": "#3c9bc4",
+          "icon": "ico/ambulance.gif",
+          "goToView": "videoPlayer"
+        }
+      ]
+    },
+    "musicPlayer": {
+      "implementApp": "musicApp"
+    },
+    "videoPlayer": {
+      "implementApp": "musicApp"
+    }
+  }
+}

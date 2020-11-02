@@ -7,10 +7,11 @@ import sys
 from tkinter import Tk, Frame, Button, Label, PhotoImage
 from math import sqrt, floor, ceil
 from subprocess import Popen
-import psutil
 import yaml
 import time
 from pynput.keyboard import Key, Controller
+import json
+from View import *
 
 keyboard = Controller()
 
@@ -51,8 +52,17 @@ class PiMenu(Frame):
         self.pack(fill=TkC.BOTH, expand=1)
 
         self.path = os.path.dirname(os.path.realpath(sys.argv[0]))
+        self.parseConfigFile("config.json")
         self.initialize()
 
+    def parseConfigFile(self, file_name):
+        # open config file and put it into a dictionnary
+        with open(file_name) as f:
+            data = json.load(f)
+
+        self.defaultViewName = data["defaultView"]
+        self.views = data["views"]
+    
     def initialize(self):
         """
         (re)load the the items from the yaml configuration and (re)init
@@ -61,15 +71,26 @@ class PiMenu(Frame):
         :return: None
         """
         subprocess.call(self.path + "/BruyerewifiagreeCurl.sh")
-        with open(self.path + '/pimenu.yaml', 'r') as f:
-            doc = yaml.load(f)
-        self.lastinit = os.path.getmtime(self.path + '/pimenu.yaml')
+        # with open(self.path + '/pimenu.yaml', 'r') as f:
+        #     doc = yaml.load(f)
+        # self.lastinit = os.path.getmtime(self.path + '/pimenu.yaml')
 
         if len(self.framestack):
             self.destroy_all()
             self.destroy_top()
 
-        self.show_items(doc)
+        # self.show_items(doc)
+
+        # create initial view
+        self.pushNewView(self.defaultViewName)
+
+
+    def pushNewView(self, name):
+        viewConfig = self.views[name]
+
+        self.framestack.append(View(viewConfig, self))
+        self.show_top()
+
 
     def has_config_changed(self):
         """
@@ -91,13 +112,12 @@ class PiMenu(Frame):
         if upper is None:
             upper = []
         num = 0
-
         # create a new frame
         wrap = Frame(self, bg="black")
 
         if len(self.framestack):
-            # when there were previous frames, hide the top one and add a back button for the new one
             self.hide_top()
+            # when there were previous frames, hide the top one and add a back button for the new one
             back = FlatButton(
                 wrap,
                 text='back…',
@@ -178,28 +198,29 @@ class PiMenu(Frame):
                 ico = self.path + '/ico/cancel.gif'
 
         self.icons[name] = PhotoImage(file=ico)
-        return self.icons[name]
+        # return self.icons[name]
+        return ico
 
     def hide_top(self):
         """
         hide the top page
         :return:
         """
-        self.framestack[len(self.framestack) - 1].pack_forget()
+        self.framestack[len(self.framestack) - 1].getFrame().pack_forget()
 
     def show_top(self):
         """
         show the top page
         :return:
         """
-        self.framestack[len(self.framestack) - 1].pack(fill=TkC.BOTH, expand=1)
+        self.framestack[len(self.framestack) - 1].getFrame().pack(fill=TkC.BOTH, expand=1)
 
     def destroy_top(self):
         """
         destroy the top page
         :return:
         """
-        self.framestack[len(self.framestack) - 1].destroy()
+        self.framestack[len(self.framestack) - 1].getFrame().destroy()
         self.framestack.pop()
 
     def destroy_all(self):
