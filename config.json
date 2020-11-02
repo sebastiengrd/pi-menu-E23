@@ -26,11 +26,10 @@
     },
     "musicPlayer": {
       "implementApp": "musicApp"
-      
     },
     "videoPlayer": {
-      "implementApp": null,
-      "buttons" : [
+      "implementApp": "videoApp",
+      "buttons": [
         {
           "label": "Back",
           "color": "#3c9bc4",

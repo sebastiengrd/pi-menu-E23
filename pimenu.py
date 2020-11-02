@@ -28,7 +28,9 @@ class PiMenu(Frame):
 
         self.path = os.path.dirname(os.path.realpath(sys.argv[0]))
         self.parseConfigFile("config.json")
+        self.isPlaying = False
         self.initialize()
+
 
     def parseConfigFile(self, file_name):
         # open config file and put it into a dictionnary
@@ -62,8 +64,6 @@ class PiMenu(Frame):
         self.pushNewView(self.defaultViewName)
 
 
-
-
     def pushNewView(self, name):
         if len(self.framestack):
             self.hide_top()
@@ -71,7 +71,7 @@ class PiMenu(Frame):
         viewConfig = self.views[name]
 
         if(viewConfig["implementApp"] == "musicApp"):
-            self.framestack.append(MusicView(self))
+            self.framestack.append(MusicView(viewConfig, self))
         else:
             self.framestack.append(View(viewConfig, self))
         

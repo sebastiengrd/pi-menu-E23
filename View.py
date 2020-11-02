@@ -41,9 +41,6 @@ class View(Frame):
                 command=lambda view=button["goToView"] : self.btnPressed(view)
             )
 
-            # if we want to configure more options
-            # b.configure(command=lambda act=act, item=item: self.show_items(item['items'], act)) # piMenu show view function
-
             # Initialize the color of the button
             b.set_color(button["color"])
 
