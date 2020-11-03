@@ -13,7 +13,7 @@
         {
           "label": "Video",
           "color": "#3c9bc4",
-          "icon": "ico/ambulance.gif",
+          "icon": "ico/movie.clapper.gif",
           "goToView": "videoPlayer"
         },
         {
@@ -28,27 +28,7 @@
       "implementApp": "musicApp"
     },
     "videoPlayer": {
-      "implementApp": "videoApp",
-      "buttons": [
-        {
-          "label": "Back",
-          "color": "#3c9bc4",
-          "icon": "ico/arrow.left.gif",
-          "goToView": "Back"
-        },
-        {
-          "label": "Second button",
-          "color": "#2ba887",
-          "icon": "ico/music.gif",
-          "goToView": "musicPlayer"
-        },
-        {
-          "label": "third button",
-          "color": "#3c9bc4",
-          "icon": "ico/ambulance.gif",
-          "goToView": "videoPlayer"
-        }
-      ]
+      "implementApp": "videoApp"
     }
   }
 }
