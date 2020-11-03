@@ -76,7 +76,6 @@ class MusicView(Frame):
         self.piMenu = piMenu
         self.buttonObjects = []
         self.playButtonIdx = None
-        
         # add static list of buttons to viewConfig since this is an app view
         viewConfig["buttons"] = self.buttons
 
@@ -116,8 +115,8 @@ class MusicView(Frame):
             self.buttonObjects.append(b)
             if button["goToView"] == "Play":
                 self.playButtonIdx = btnCount
-            # if button["goToView"] == "Title":
-            #     self.playButtonIdx = btnCount
+            if button["goToView"] == "Title":
+                self.titleButtonIdx = btnCount
 
             # Initialize the color of the button
             b.set_color(button["color"])
@@ -125,9 +124,10 @@ class MusicView(Frame):
             # add buton to the grid
             b.grid(
                 row=int(floor(btnCount / cols)),
-                column=int(btnCount % cols),
+                column=int(btnCount % cols) + (1 if button["goToView"] == "Next" else 0),
                 padx=1,
                 pady=1,
+                columnspan=2 if button["goToView"] == "Play" else 1 ,
                 sticky=TkC.W + TkC.E + TkC.N + TkC.S
             )
             
@@ -135,8 +135,7 @@ class MusicView(Frame):
             btnCount += 1
 
         # if music is already playing then modify button
-        if self.piMenu.isPlaying:
-            self.buttonObjects[self.playButtonIdx].config(text="Stop")
+        self.updatePlayButton()
 
     # When a button is pressed, this function is called
     def btnPressed(self, action):
@@ -164,21 +163,33 @@ class MusicView(Frame):
             mixer.music.set_volume(self.volume)
             mixer.music.load(self.playlist.previous())
             mixer.music.play()
+            self.piMenu.isPlaying = True
+            self.updatePlayButton()
 
         elif action == "Play":
             mixer.music.set_volume(self.volume)
             mixer.music.load(self.playlist.getCurrent())
             # if we want to play
             if not self.piMenu.isPlaying:
-                self.buttonObjects[self.playButtonIdx].config(text="Stop")
                 mixer.music.play()
             else:
-                self.buttonObjects[self.playButtonIdx].config(text="Play")
                 mixer.music.stop()
-            
+
             self.piMenu.isPlaying = not self.piMenu.isPlaying
+            self.updatePlayButton()            
             
         elif action == "Next":
             mixer.music.set_volume(self.volume)
             mixer.music.load(self.playlist.next())
             mixer.music.play()
+            self.piMenu.isPlaying = True
+            self.updatePlayButton()
+
+
+    def updatePlayButton(self):
+        if not self.piMenu.isPlaying:
+            self.buttonObjects[self.playButtonIdx].config(text="Play")
+        else:
+            self.buttonObjects[self.playButtonIdx].config(text="Stop")
+
+        self.buttonObjects[self.titleButtonIdx].config(text = self.playlist.getCurrent()[9:-4])
