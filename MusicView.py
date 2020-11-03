@@ -1,3 +1,4 @@
+from Playlist import Playlist
 import tkinter.constants as TkC
 from tkinter import Frame, PhotoImage
 from pimenu import FlatButton
@@ -8,6 +9,8 @@ class MusicView(Frame):
     """
     Easily configure a tkinter Frame for the Music app
     """
+    playlist = Playlist("playlist/")
+    
     volume = 0.7
     isPlaying = False
     buttons = [
@@ -17,12 +20,12 @@ class MusicView(Frame):
             "icon": "ico/arrow.left.gif",
             "goToView": "Back"
         },
-        # {
-        #     "label": "Title",
-        #     "color": "#3c9bc4",
-        #     "icon": None,
-        #     "goToView": "Title"
-        # },
+        {
+            "label": "Title",
+            "color": "#3c9bc4",
+            "icon": None,
+            "goToView": "Title"
+        },
         {
             "label": "Decrease Volume",
             "color": "#2ba887",
@@ -80,7 +83,6 @@ class MusicView(Frame):
         self.initialize(viewConfig)
 
 
-
     def initialize(self, viewConfig):        
         # calculate tile distribution
         itemsNumber = len(viewConfig["buttons"])
@@ -114,6 +116,8 @@ class MusicView(Frame):
             self.buttonObjects.append(b)
             if button["goToView"] == "Play":
                 self.playButtonIdx = btnCount
+            # if button["goToView"] == "Title":
+            #     self.playButtonIdx = btnCount
 
             # Initialize the color of the button
             b.set_color(button["color"])
@@ -138,22 +142,32 @@ class MusicView(Frame):
     def btnPressed(self, action):
         if action == "Back":
             self.piMenu.go_back()
+
         elif action == "Title":
             pass
+
         elif action == "DecreaseVolume":
             self.volume -= 0.1
             mixer.music.set_volume(self.volume)
+
         elif action == "Shuffle":
             pass
+
         elif action == "Repeat":
             pass
+
         elif action == "IncreaseVolume":
             self.volume += 0.1
             mixer.music.set_volume(self.volume)
+
         elif action == "Previous":
-            pass
+            mixer.music.set_volume(self.volume)
+            mixer.music.load(self.playlist.previous())
+            mixer.music.play()
+
         elif action == "Play":
             mixer.music.set_volume(self.volume)
+            mixer.music.load(self.playlist.getCurrent())
             # if we want to play
             if not self.piMenu.isPlaying:
                 self.buttonObjects[self.playButtonIdx].config(text="Stop")
@@ -163,5 +177,8 @@ class MusicView(Frame):
                 mixer.music.stop()
             
             self.piMenu.isPlaying = not self.piMenu.isPlaying
+            
         elif action == "Next":
-            pass
+            mixer.music.set_volume(self.volume)
+            mixer.music.load(self.playlist.next())
+            mixer.music.play()

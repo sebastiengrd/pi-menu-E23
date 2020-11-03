@@ -40,6 +40,7 @@ class PiMenu(Frame):
         self.defaultViewName = data["defaultView"]
         self.views = data["views"]
     
+
     def initialize(self):
         """
         (re)load the the items from the yaml configuration and (re)init
@@ -53,7 +54,7 @@ class PiMenu(Frame):
         
         # initialize audio
         mixer.init() 
-        mixer.music.load("music.wav")
+        # mixer.music.load("music.wav")
         # mixer.music.play() 
 
         if len(self.framestack):
