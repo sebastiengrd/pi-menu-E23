@@ -12,6 +12,7 @@ import json
 from View import *
 from FlatButton import *
 from MusicView import *
+from VideoView import *
 
 from pygame import mixer
 
@@ -73,6 +74,8 @@ class PiMenu(Frame):
 
         if(viewConfig["implementApp"] == "musicApp"):
             self.framestack.append(MusicView(viewConfig, self))
+        elif(viewConfig["implementApp"] == "videoApp"):
+            self.framestack.append(VideoView(viewConfig, self))
         else:
             self.framestack.append(View(viewConfig, self))
         

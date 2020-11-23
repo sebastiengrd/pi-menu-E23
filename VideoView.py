@@ -5,6 +5,7 @@ from Playlist import Playlist
 from tkinter import Frame, PhotoImage
 from pimenu import FlatButton
 from math import floor, sqrt, ceil
+import vlc
 
 class VideoView(Frame):
     playlist = Playlist("videos/")
@@ -67,10 +68,13 @@ class VideoView(Frame):
         self.vlc_instance, self.vlc_media_player_instance = self.create_vlc_instance()
 
         # vlc video frame
-        self.video_panel = ttk.Frame(self.container_instance)
+        self.video_panel = ttk.Frame(self.piMenu)
         self.canvas = tk.Canvas(self.video_panel, background='black')
         self.canvas.pack(fill=tk.BOTH, expand=1)
         self.video_panel.pack(fill=tk.BOTH, expand=1)
+        self.playFilm()
+
+        # controls 
         
         # # calculate tile distribution
         # itemsNumber = len(viewConfig["buttons"])
@@ -154,7 +158,28 @@ class VideoView(Frame):
         self.Media = self.vlc_instance.media_new(
             str(os.path.join(directory_name, file_name))
         )
-        self.Media.get_meta()
         self.vlc_media_player_instance.set_media(self.Media)
         self.vlc_media_player_instance.set_xwindow(self.get_handle())
         self.vlc_media_player_instance.play()
+
+    def create_vlc_instance(self):
+        vlc_instance = vlc.Instance()
+        vlc_media_player_instance = vlc_instance.media_player_new()
+        self.piMenu.update()
+        return vlc_instance, vlc_media_player_instance
+
+    def get_handle(self):
+        return self.video_panel.winfo_id()
+
+    def create_control_panel(self):
+    """Add control panel."""
+    control_panel = ttk.Frame(self.container_instance)
+    pause = ttk.Button(control_panel, text="Pause", command=self.pause)
+    play = ttk.Button(control_panel, text="Play", command=self.play)
+    stop = ttk.Button(control_panel, text="Stop", command=self.stop)
+    volume = ttk.Button(control_panel, text="Volume", command=None)
+    pause.pack(side=tk.LEFT)
+    play.pack(side=tk.LEFT)
+    stop.pack(side=tk.LEFT)
+    volume.pack(side=tk.LEFT)
+    control_panel.pack(side=tk.BOTTOM)
