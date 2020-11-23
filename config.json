@@ -6,19 +6,19 @@
       "buttons": [
         {
           "label": "Music",
-          "color": "#3c9bc4",
+          "color": "#0B2F6D",
           "icon": "ico/music.gif",
           "goToView": "musicPlayer"
         },
         {
           "label": "Video",
-          "color": "#3c9bc4",
+          "color": "#0B2F6D",
           "icon": "ico/movie.clapper.gif",
           "goToView": "videoPlayer"
         },
         {
           "label": "Exit",
-          "color": "#2ba887",
+          "color": "#0091A0",
           "icon": "ico/stop.gif",
           "goToView": "Exit"
         }
