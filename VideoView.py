@@ -7,9 +7,10 @@ from pimenu import FlatButton
 from math import floor, sqrt, ceil
 import vlc
 
+
 class VideoView(Frame):
     playlist = Playlist("videos/")
-    
+
     volume = 0.7
     isPlaying = False
     buttons = [
@@ -62,7 +63,6 @@ class VideoView(Frame):
 
         self.initialize(viewConfig)
 
-
     def initialize(self, viewConfig):
         # create vlc instance
         self.vlc_instance, self.vlc_media_player_instance = self.create_vlc_instance()
@@ -74,8 +74,8 @@ class VideoView(Frame):
         self.video_panel.pack(fill=tk.BOTH, expand=1)
         self.playFilm()
 
-        # controls 
-        
+        # controls
+
         # # calculate tile distribution
         # itemsNumber = len(viewConfig["buttons"])
         # rows = floor(sqrt(itemsNumber))
@@ -84,14 +84,14 @@ class VideoView(Frame):
         # # make cells autoscale
         # for x in range(int(cols)):
         #     self.columnconfigure(x, weight=1)
-        
+
         # for y in range(int(rows)):
         #     self.rowconfigure(y, weight=1)
 
         # #initialize each buttons in the frame
         # btnCount = 0
         # for button in viewConfig["buttons"]:
-        #     # import the image 
+        #     # import the image
         #     image = None
         #     if button["icon"] != None:
         #         # keep reference of PhotoImage to prevent destruction of the object
@@ -104,7 +104,7 @@ class VideoView(Frame):
         #         text=button["label"],
         #         image=image,
         #         command=lambda view=button["goToView"] : self.btnPressed(view))
-            
+
         #     self.buttonObjects.append(b)
         #     if button["goToView"] == "Play":
         #         self.playButtonIdx = btnCount
@@ -123,11 +123,11 @@ class VideoView(Frame):
         #         columnspan=2 if button["goToView"] == "Play" else 1 ,
         #         sticky=TkC.W + TkC.E + TkC.N + TkC.S
         #     )
-            
 
         #     btnCount += 1
 
     # When a button is pressed, this function is called
+
     def btnPressed(self, action):
         if action == "Back":
             self.piMenu.go_back()
@@ -146,12 +146,12 @@ class VideoView(Frame):
 
         elif action == "Play":
             self.playFilm()
-            # self.updatePlayButton()            
-            
+            # self.updatePlayButton()
+
         elif action == "Next":
             self.playlist.next()
             self.playFilm()
-    
+
     def playFilm(self):
         directory_name = os.path.dirname(self.playlist.getCurrent())
         file_name = os.path.basename(self.playlist.getCurrent())
@@ -172,14 +172,14 @@ class VideoView(Frame):
         return self.video_panel.winfo_id()
 
     def create_control_panel(self):
-    """Add control panel."""
-    control_panel = ttk.Frame(self.container_instance)
-    pause = ttk.Button(control_panel, text="Pause", command=self.pause)
-    play = ttk.Button(control_panel, text="Play", command=self.play)
-    stop = ttk.Button(control_panel, text="Stop", command=self.stop)
-    volume = ttk.Button(control_panel, text="Volume", command=None)
-    pause.pack(side=tk.LEFT)
-    play.pack(side=tk.LEFT)
-    stop.pack(side=tk.LEFT)
-    volume.pack(side=tk.LEFT)
-    control_panel.pack(side=tk.BOTTOM)
+        """Add control panel."""
+        control_panel = ttk.Frame(self.container_instance)
+        pause = ttk.Button(control_panel, text="Pause", command=self.pause)
+        play = ttk.Button(control_panel, text="Play", command=self.play)
+        stop = ttk.Button(control_panel, text="Stop", command=self.stop)
+        volume = ttk.Button(control_panel, text="Volume", command=None)
+        pause.pack(side=tk.LEFT)
+        play.pack(side=tk.LEFT)
+        stop.pack(side=tk.LEFT)
+        volume.pack(side=tk.LEFT)
+        control_panel.pack(side=tk.BOTTOM)

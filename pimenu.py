@@ -14,7 +14,6 @@ from FlatButton import *
 from MusicView import *
 from VideoView import *
 
-from pygame import mixer
 
 class PiMenu(Frame):
     framestack = []
@@ -53,10 +52,6 @@ class PiMenu(Frame):
 
         # self.lastinit = os.path.getmtime(self.path + '/pimenu.yaml')
         
-        # initialize audio
-        mixer.init() 
-        # mixer.music.load("music.wav")
-        # mixer.music.play() 
 
         if len(self.framestack):
             self.destroy_all()
