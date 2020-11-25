@@ -100,9 +100,10 @@ class MusicView(Frame):
         for button in viewConfig["buttons"]:
             # Initialize
             b = FlatButton(
-                self,
                 imagePath=button["icon"],
+                parent=self,
                 text=button["label"],
+                color=button["color"],
                 command=lambda view=button["goToView"] : self.btnPressed(view))
             
             self.buttonObjects.append(b)
@@ -111,10 +112,7 @@ class MusicView(Frame):
             if button["goToView"] == "Title":
                 self.titleButtonIdx = btnCount
 
-            # Initialize the color of the button
-            b.set_color(button["color"])
-
-            # add buton to the grid
+            # add button to the grid
             b.grid(
                 row=int(floor(btnCount / cols)),
                 column=int(btnCount % cols) + (1 if button["goToView"] == "Next" else 0),

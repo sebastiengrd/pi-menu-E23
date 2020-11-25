@@ -33,14 +33,12 @@ class View(Frame):
             # Initialize
             print(button["icon"])
             b = FlatButton(
-                self,
                 imagePath=button["icon"],
+                parent=self,
                 text=button["label"],
+                color=button["color"],
                 command=lambda view=button["goToView"] : self.btnPressed(view)
             )
-
-            # Initialize the color of the button
-            b.set_color(button["color"])
 
             # add buton to the grid
             b.grid(
