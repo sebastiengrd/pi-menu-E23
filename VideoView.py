@@ -2,14 +2,13 @@ import os
 from tkinter import ttk
 import tkinter as tk
 from Playlist import Playlist
-from tkinter import Frame, PhotoImage
-from pimenu import FlatButton
+from tkinter import Frame
 from math import floor, sqrt, ceil
+from FlatButton import *
 import vlc
 
 class VideoView(Frame):
     playlist = Playlist("videos/")
-    
     volume = 0.7
     isPlaying = False
     buttons = [
@@ -54,6 +53,7 @@ class VideoView(Frame):
     def __init__(self, viewConfig, piMenu):
         super().__init__(piMenu)
         self.images = {}
+        self.view = self
         self.piMenu = piMenu
         self.buttonObjects = []
         self.playButtonIdx = None
@@ -75,57 +75,8 @@ class VideoView(Frame):
         self.playFilm()
 
         # controls 
+        self.create_control_panel(viewConfig)        
         
-        # # calculate tile distribution
-        # itemsNumber = len(viewConfig["buttons"])
-        # rows = floor(sqrt(itemsNumber))
-        # cols = ceil(itemsNumber / rows)
-
-        # # make cells autoscale
-        # for x in range(int(cols)):
-        #     self.columnconfigure(x, weight=1)
-        
-        # for y in range(int(rows)):
-        #     self.rowconfigure(y, weight=1)
-
-        # #initialize each buttons in the frame
-        # btnCount = 0
-        # for button in viewConfig["buttons"]:
-        #     # import the image 
-        #     image = None
-        #     if button["icon"] != None:
-        #         # keep reference of PhotoImage to prevent destruction of the object
-        #         self.images[button["icon"]] = PhotoImage(file=button["icon"])
-        #         image = self.images[button["icon"]]
-
-        #     # Initialize
-        #     b = FlatButton(
-        #         self,
-        #         text=button["label"],
-        #         image=image,
-        #         command=lambda view=button["goToView"] : self.btnPressed(view))
-            
-        #     self.buttonObjects.append(b)
-        #     if button["goToView"] == "Play":
-        #         self.playButtonIdx = btnCount
-        #     if button["goToView"] == "Title":
-        #         self.titleButtonIdx = btnCount
-
-        #     # Initialize the color of the button
-        #     b.set_color(button["color"])
-
-        #     # add buton to the grid
-        #     b.grid(
-        #         row=int(floor(btnCount / cols)),
-        #         column=int(btnCount % cols) + (1 if button["goToView"] == "Next" else 0),
-        #         padx=1,
-        #         pady=1,
-        #         columnspan=2 if button["goToView"] == "Play" else 1 ,
-        #         sticky=TkC.W + TkC.E + TkC.N + TkC.S
-        #     )
-            
-
-        #     btnCount += 1
 
     # When a button is pressed, this function is called
     def btnPressed(self, action):
@@ -152,6 +103,7 @@ class VideoView(Frame):
             self.playlist.next()
             self.playFilm()
     
+
     def playFilm(self):
         directory_name = os.path.dirname(self.playlist.getCurrent())
         file_name = os.path.basename(self.playlist.getCurrent())
@@ -162,24 +114,61 @@ class VideoView(Frame):
         self.vlc_media_player_instance.set_xwindow(self.get_handle())
         self.vlc_media_player_instance.play()
 
+
     def create_vlc_instance(self):
         vlc_instance = vlc.Instance()
         vlc_media_player_instance = vlc_instance.media_player_new()
         self.piMenu.update()
         return vlc_instance, vlc_media_player_instance
 
+
     def get_handle(self):
         return self.video_panel.winfo_id()
 
-    def create_control_panel(self):
-    """Add control panel."""
-    control_panel = ttk.Frame(self.container_instance)
-    pause = ttk.Button(control_panel, text="Pause", command=self.pause)
-    play = ttk.Button(control_panel, text="Play", command=self.play)
-    stop = ttk.Button(control_panel, text="Stop", command=self.stop)
-    volume = ttk.Button(control_panel, text="Volume", command=None)
-    pause.pack(side=tk.LEFT)
-    play.pack(side=tk.LEFT)
-    stop.pack(side=tk.LEFT)
-    volume.pack(side=tk.LEFT)
-    control_panel.pack(side=tk.BOTTOM)
+
+    def create_control_panel(self, viewConfig):
+        """Add control panel."""
+        control_panel = ttk.Frame(self.piMenu)
+
+        # calculate tile distribution
+        itemsNumber = len(viewConfig["buttons"])
+        rows = floor(sqrt(itemsNumber))
+        cols = ceil(itemsNumber / rows)
+
+        #initialize each buttons in the frame
+        btnCount = 0
+        for button in viewConfig["buttons"]:
+            # Initialize
+            b = FlatButton(
+                self,
+                text=button["label"],
+                imagePath=button["icon"],
+                command=lambda view=button["goToView"] : self.btnPressed(view))
+            
+            # Initialize the color of the button
+            b.set_color(button["color"])
+
+            # add buton to the grid
+            b.grid(
+                row=int(floor(btnCount / cols)),
+                column=int(btnCount % cols),
+                padx=1,
+                pady=1,
+                columnspan=1 ,
+                sticky=TkC.W + TkC.E + TkC.N + TkC.S
+            )
+
+            btnCount += 1
+
+        # make cells autoscale
+        for x in range(int(cols)):
+            self.columnconfigure(x, weight=1)
+        
+        for y in range(int(rows)):
+            self.rowconfigure(y, weight=1)
+
+        # pause.pack(side=tk.LEFT)
+        # play.pack(side=tk.LEFT)
+        # stop.pack(side=tk.LEFT)
+        # volume.pack(side=tk.LEFT)
+        control_panel.pack(fill=tk.BOTH, expand=1, side=tk.BOTTOM)

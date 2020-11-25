@@ -1,6 +1,6 @@
 import tkinter.constants as TkC
-from tkinter import Frame, PhotoImage
-from pimenu import FlatButton
+from tkinter import Frame
+from FlatButton import *
 from math import floor, sqrt, ceil
 
 class View(Frame):
@@ -30,14 +30,11 @@ class View(Frame):
         #initialize each buttons in the frame
         btnCount = 0
         for button in viewConfig["buttons"]:
-            # import the image 
-            self.images[button["icon"]] = PhotoImage(file=button["icon"])
-
             # Initialize
             b = FlatButton(
                 self,
                 text=button["label"],
-                image=self.images[button["icon"]],
+                image=button["icon"],
                 command=lambda view=button["goToView"] : self.btnPressed(view)
             )
 

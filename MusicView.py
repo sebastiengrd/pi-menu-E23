@@ -1,9 +1,8 @@
 from Playlist import Playlist
 import tkinter.constants as TkC
-from tkinter import Frame, PhotoImage
-from pimenu import FlatButton
+from tkinter import Frame
+from FlatButton import *
 from math import floor, sqrt, ceil
-from pygame import mixer
 
 class MusicView(Frame):
     """
@@ -98,18 +97,11 @@ class MusicView(Frame):
         #initialize each buttons in the frame
         btnCount = 0
         for button in viewConfig["buttons"]:
-            # import the image 
-            image = None
-            if button["icon"] != None:
-                # keep reference of PhotoImage to prevent destruction of the object
-                self.images[button["icon"]] = PhotoImage(file=button["icon"])
-                image = self.images[button["icon"]]
-
             # Initialize
             b = FlatButton(
                 self,
                 text=button["label"],
-                image=image,
+                image=button["icon"],
                 command=lambda view=button["goToView"] : self.btnPressed(view))
             
             self.buttonObjects.append(b)
