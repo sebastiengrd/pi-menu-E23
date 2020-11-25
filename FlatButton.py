@@ -10,6 +10,7 @@ class FlatButton(Button):
         self.image = None
         if imagePath != None:
             # keep reference of PhotoImage to prevent destruction of the object
+            print(imagePath)
             self.image = PhotoImage(file=imagePath)
 
         Button.__init__(self, master, cnf, image=self.image, **kw)

@@ -1,8 +1,9 @@
 from Playlist import Playlist
 import tkinter.constants as TkC
-from tkinter import Frame
-from FlatButton import *
+from tkinter import Frame, PhotoImage
+from pimenu import FlatButton
 from math import floor, sqrt, ceil
+from pygame import mixer
 
 class MusicView(Frame):
     """
@@ -15,19 +16,19 @@ class MusicView(Frame):
     buttons = [
         {
             "label": "Back",
-            "color": "#0091A0",
+            "color": "#3c9bc4",
             "icon": "ico/arrow.left.gif",
             "goToView": "Back"
         },
         {
             "label": "Title",
-            "color": "#0B2F6D",
+            "color": "#3c9bc4",
             "icon": None,
             "goToView": "Title"
         },
         {
             "label": "Decrease Volume",
-            "color": "#0B2F6D",
+            "color": "#2ba887",
             "icon": "ico/minus.gif",
             "goToView": "DecreaseVolume"
         },
@@ -45,25 +46,25 @@ class MusicView(Frame):
         # },
         {
             "label": "Increase Volume",
-            "color": "#0B2F6D",
+            "color": "#2ba887",
             "icon": "ico/add.gif",
             "goToView": "IncreaseVolume"
         },
         {
             "label": "Previous",
-            "color": "#0B2F6D",
+            "color": "#2ba887",
             "icon": "ico/navigate.previous.gif",
             "goToView": "Previous"
         },
         {
             "label": "Play",
-            "color": "#0091A0",
+            "color": "#2ba887",
             "icon": "ico/control.play.gif",
             "goToView": "Play"
         },
         {
             "label": "Next",
-            "color": "#0B2F6D",
+            "color": "#2ba887",
             "icon": "ico/navigate.next.gif",
             "goToView": "Next"
         }
@@ -100,8 +101,8 @@ class MusicView(Frame):
             # Initialize
             b = FlatButton(
                 self,
+                imagePath=button["icon"],
                 text=button["label"],
-                image=button["icon"],
                 command=lambda view=button["goToView"] : self.btnPressed(view))
             
             self.buttonObjects.append(b)

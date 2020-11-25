@@ -31,10 +31,11 @@ class View(Frame):
         btnCount = 0
         for button in viewConfig["buttons"]:
             # Initialize
+            print(button["icon"])
             b = FlatButton(
                 self,
+                imagePath=button["icon"],
                 text=button["label"],
-                image=button["icon"],
                 command=lambda view=button["goToView"] : self.btnPressed(view)
             )
 

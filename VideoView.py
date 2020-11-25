@@ -141,8 +141,8 @@ class VideoView(Frame):
             # Initialize
             b = FlatButton(
                 self,
-                text=button["label"],
                 imagePath=button["icon"],
+                text=button["label"],
                 command=lambda view=button["goToView"] : self.btnPressed(view))
             
             # Initialize the color of the button
