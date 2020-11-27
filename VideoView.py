@@ -7,6 +7,8 @@ from FlatButton import *
 import vlc
 
 class VideoView(Frame):
+    vlc_instance = vlc.Instance()
+    vlc_media_player_instance = vlc_instance.media_player_new()
     playlist = Playlist("videos/")
     volume = 0.7
     isPlaying = False
@@ -63,16 +65,11 @@ class VideoView(Frame):
 
 
     def initialize(self, viewConfig):
-        # create vlc instance
-        self.vlc_instance, self.vlc_media_player_instance = self.create_vlc_instance()
-
-        # vlc video frame
+        self.piMenu.update()
         
+        # vlc video frame
         self.videopanel = tk.Frame(self)
         self.canvas = tk.Canvas(self.videopanel, background="black").pack(fill=tk.BOTH,expand=1)
-        # self.videopanel.grid()
-
-        # self.canvas = tk.Canvas(self, background='black')
         self.videopanel.pack(fill=tk.BOTH, expand=True)
         self.playFilm()
 
@@ -83,6 +80,7 @@ class VideoView(Frame):
     # When a button is pressed, this function is called
     def btnPressed(self, action):
         if action == "Back":
+            self.vlc_media_player_instance.pause()
             self.piMenu.go_back()
 
         elif action == "DecreaseVolume":
@@ -107,22 +105,17 @@ class VideoView(Frame):
     
 
     def playFilm(self):
-        directory_name = os.path.dirname(self.playlist.getCurrent())
-        file_name = os.path.basename(self.playlist.getCurrent())
-        self.Media = self.vlc_instance.media_new(
-            str(os.path.join(directory_name, file_name))
-        )
-        self.vlc_media_player_instance.set_media(self.Media)
-        self.vlc_media_player_instance.set_xwindow(self.get_handle())
-
-        self.vlc_media_player_instance.play()
-
-
-    def create_vlc_instance(self):
-        vlc_instance = vlc.Instance()
-        vlc_media_player_instance = vlc_instance.media_player_new()
+        if not self.vlc_media_player_instance.get_media():
+            directory_name = os.path.dirname(self.playlist.getCurrent())
+            file_name = os.path.basename(self.playlist.getCurrent())
+            self.Media = self.vlc_instance.media_new(
+                str(os.path.join(directory_name, file_name))
+            )
+            self.vlc_media_player_instance.set_media(self.Media)
+            self.vlc_media_player_instance.set_xwindow(self.get_handle())
+        
         self.piMenu.update()
-        return vlc_instance, vlc_media_player_instance
+        self.vlc_media_player_instance.play()
 
 
     def get_handle(self):
