@@ -52,24 +52,43 @@ class VideoView(Frame):
         }
     ]
 
+    
     def __init__(self, viewConfig, piMenu):
         super().__init__(piMenu)
         self.images = {}
         self.view = self
         self.piMenu = piMenu
+        self.showControlPanel = True
         self.buttonObjects = []
         self.playButtonIdx = None
         # add static list of buttons to viewConfig since this is an app view
         viewConfig["buttons"] = self.buttons
-
+        self.viewConfig = viewConfig
         self.initialize(viewConfig)
+
+    
+    def videoPanelPressed(self, event):
+
+        if self.showControlPanel:
+            self.control_panel.destroy()
+        else:
+            self.create_control_panel(self.viewConfig)
+        
+        self.showControlPanel = 1 - self.showControlPanel
+
+
 
     def initialize(self, viewConfig):
         self.piMenu.update()
         
         # vlc video frame
         self.videopanel = tk.Frame(self)
-        self.canvas = tk.Canvas(self.videopanel, background="black").pack(fill=tk.BOTH,expand=1)
+
+        self.canvas = tk.Canvas(self.videopanel, background="black")
+        self.canvas.bind("<Button-1>", self.videoPanelPressed)
+        self.videopanel.bind("<Button-1>", self.videoPanelPressed)
+        self.canvas.focus_set()
+        self.canvas.pack(fill=tk.BOTH,expand=1)
         self.videopanel.pack(fill=tk.BOTH, expand=True)
         self.playFilm()
 
@@ -132,7 +151,7 @@ class VideoView(Frame):
 
     def create_control_panel(self, viewConfig):
         """Add control panel."""
-        control_panel = tk.Frame(self)
+        self.control_panel = tk.Frame(self)
 
         # calculate tile distribution
         itemsNumber = len(viewConfig["buttons"])
@@ -145,7 +164,7 @@ class VideoView(Frame):
             # Initialize
             b = FlatButton(
                 imagePath=button["icon"],
-                parent=control_panel,
+                parent=self.control_panel,
                 text=button["label"],
                 color=button["color"],
                 command=lambda view=button["goToView"] : self.btnPressed(view))
@@ -169,15 +188,17 @@ class VideoView(Frame):
 
         # make cells autoscale
         for x in range(int(cols)):
-            control_panel.columnconfigure(x, weight=1)
+            self.control_panel.columnconfigure(x, weight=1)
         
         for y in range(int(rows)):
-            control_panel.rowconfigure(y, weight=1)
+            self.control_panel.rowconfigure(y, weight=1)
 
-        control_panel.pack(fill=tk.BOTH, expand=True)
+        self.control_panel.pack(fill=tk.BOTH, expand=True)
 
     def updatePlayButton(self):
         if not self.piMenu.isVideoPlaying:
             self.buttonObjects[self.playButtonIdx].config(text="Play")
         else:
             self.buttonObjects[self.playButtonIdx].config(text="Stop")
+
+  
