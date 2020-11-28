@@ -6,6 +6,7 @@ from math import floor, sqrt, ceil
 from FlatButton import *
 import vlc
 
+
 class VideoView(Frame):
     vlc_instance = vlc.Instance()
     vlc_media_player_instance = vlc_instance.media_player_new()
@@ -63,7 +64,6 @@ class VideoView(Frame):
 
         self.initialize(viewConfig)
 
-
     def initialize(self, viewConfig):
         self.piMenu.update()
         
@@ -73,11 +73,10 @@ class VideoView(Frame):
         self.videopanel.pack(fill=tk.BOTH, expand=True)
         self.playFilm()
 
-        # controls 
-        self.create_control_panel(viewConfig)        
-        
+        self.create_control_panel(viewConfig)
 
     # When a button is pressed, this function is called
+
     def btnPressed(self, action):
         if action == "Back":
             self.vlc_media_player_instance.pause()
@@ -97,12 +96,11 @@ class VideoView(Frame):
 
         elif action == "Play":
             self.playFilm()
-            # self.updatePlayButton()            
-            
+            # self.updatePlayButton()
+
         elif action == "Next":
             self.playlist.next()
             self.playFilm()
-    
 
     def playFilm(self):
         if not self.vlc_media_player_instance.get_media():
