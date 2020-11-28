@@ -10,10 +10,9 @@ from subprocess import Popen
 import time
 import json
 from View import *
-from FlatButton import *
 from MusicView import *
+from VideoView import *
 
-from pygame import mixer
 
 class PiMenu(Frame):
     framestack = []
@@ -29,6 +28,7 @@ class PiMenu(Frame):
         self.path = os.path.dirname(os.path.realpath(sys.argv[0]))
         self.parseConfigFile("config.json")
         self.isPlaying = False
+        self.isVideoPlaying = False
         self.initialize()
 
 
@@ -52,10 +52,6 @@ class PiMenu(Frame):
 
         # self.lastinit = os.path.getmtime(self.path + '/pimenu.yaml')
         
-        # initialize audio
-        mixer.init() 
-        # mixer.music.load("music.wav")
-        # mixer.music.play() 
 
         if len(self.framestack):
             self.destroy_all()
@@ -73,6 +69,8 @@ class PiMenu(Frame):
 
         if(viewConfig["implementApp"] == "musicApp"):
             self.framestack.append(MusicView(viewConfig, self))
+        elif(viewConfig["implementApp"] == "videoApp"):
+            self.framestack.append(VideoView(viewConfig, self))
         else:
             self.framestack.append(View(viewConfig, self))
         

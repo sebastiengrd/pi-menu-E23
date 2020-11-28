@@ -3,7 +3,7 @@ import tkinter.constants as TkC
 from tkinter import Frame, PhotoImage
 from pimenu import FlatButton
 from math import floor, sqrt, ceil
-from pygame import mixer
+import vlc
 
 class MusicView(Frame):
     """
@@ -13,6 +13,8 @@ class MusicView(Frame):
     
     volume = 0.7
     isPlaying = False
+    # creating vlc media player object 
+    mediaPlayer = vlc.MediaPlayer() 
     buttons = [
         {
             "label": "Back",
@@ -79,10 +81,13 @@ class MusicView(Frame):
         # add static list of buttons to viewConfig since this is an app view
         viewConfig["buttons"] = self.buttons
 
+
         self.initialize(viewConfig)
 
 
-    def initialize(self, viewConfig):        
+    def initialize(self, viewConfig):
+        
+        
         # calculate tile distribution
         itemsNumber = len(viewConfig["buttons"])
         rows = floor(sqrt(itemsNumber))
@@ -98,18 +103,12 @@ class MusicView(Frame):
         #initialize each buttons in the frame
         btnCount = 0
         for button in viewConfig["buttons"]:
-            # import the image 
-            image = None
-            if button["icon"] != None:
-                # keep reference of PhotoImage to prevent destruction of the object
-                self.images[button["icon"]] = PhotoImage(file=button["icon"])
-                image = self.images[button["icon"]]
-
             # Initialize
             b = FlatButton(
-                self,
+                imagePath=button["icon"],
+                parent=self,
                 text=button["label"],
-                image=image,
+                color=button["color"],
                 command=lambda view=button["goToView"] : self.btnPressed(view))
             
             self.buttonObjects.append(b)
@@ -118,10 +117,7 @@ class MusicView(Frame):
             if button["goToView"] == "Title":
                 self.titleButtonIdx = btnCount
 
-            # Initialize the color of the button
-            b.set_color(button["color"])
-
-            # add buton to the grid
+            # add button to the grid
             b.grid(
                 row=int(floor(btnCount / cols)),
                 column=int(btnCount % cols) + (1 if button["goToView"] == "Next" else 0),
@@ -147,7 +143,7 @@ class MusicView(Frame):
 
         elif action == "DecreaseVolume":
             self.volume -= 0.1
-            mixer.music.set_volume(self.volume)
+            self.mediaPlayer.audio_set_volume(int(self.volume*100))
 
         elif action == "Shuffle":
             pass
@@ -157,31 +153,35 @@ class MusicView(Frame):
 
         elif action == "IncreaseVolume":
             self.volume += 0.1
-            mixer.music.set_volume(self.volume)
+            self.mediaPlayer.audio_set_volume(int(self.volume*100))
+
 
         elif action == "Previous":
-            mixer.music.set_volume(self.volume)
-            mixer.music.load(self.playlist.previous())
-            mixer.music.play()
+            self.media = vlc.Media(self.playlist.previous())
+            self.mediaPlayer.set_media(self.media)
+            self.mediaPlayer.audio_set_volume(int(self.volume*100)) 
+            self.mediaPlayer.play()
             self.piMenu.isPlaying = True
             self.updatePlayButton()
 
         elif action == "Play":
-            mixer.music.set_volume(self.volume)
-            mixer.music.load(self.playlist.getCurrent())
+            self.media = vlc.Media(self.playlist.getCurrent())
+            self.mediaPlayer.set_media(self.media)
+            self.mediaPlayer.audio_set_volume(int(self.volume*100)) 
             # if we want to play
             if not self.piMenu.isPlaying:
-                mixer.music.play()
+                self.mediaPlayer.play()
             else:
-                mixer.music.stop()
+                self.mediaPlayer.stop()
 
             self.piMenu.isPlaying = not self.piMenu.isPlaying
             self.updatePlayButton()            
             
         elif action == "Next":
-            mixer.music.set_volume(self.volume)
-            mixer.music.load(self.playlist.next())
-            mixer.music.play()
+            self.media = vlc.Media(self.playlist.next())
+            self.mediaPlayer.set_media(self.media)
+            self.mediaPlayer.audio_set_volume(int(self.volume*100))
+            self.mediaPlayer.play()
             self.piMenu.isPlaying = True
             self.updatePlayButton()
 

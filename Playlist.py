@@ -6,9 +6,7 @@ class Playlist:
     def __init__(self, playlistPath):
         self.current = -1
         self.items = [(playlistPath+item) for item in os.listdir(playlistPath)]
-        print(self.items)
         self.length = len(self.items)
-        print("playlist init")
 
     def next(self):
         self.current += 1
