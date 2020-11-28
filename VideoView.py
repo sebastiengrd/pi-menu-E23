@@ -103,14 +103,13 @@ class VideoView(Frame):
             self.playFilm()
 
     def playFilm(self):
-        if not self.vlc_media_player_instance.get_media():
-            directory_name = os.path.dirname(self.playlist.getCurrent())
-            file_name = os.path.basename(self.playlist.getCurrent())
-            self.Media = self.vlc_instance.media_new(
-                str(os.path.join(directory_name, file_name))
-            )
-            self.vlc_media_player_instance.set_media(self.Media)
-            self.vlc_media_player_instance.set_xwindow(self.get_handle())
+        directory_name = os.path.dirname(self.playlist.getCurrent())
+        file_name = os.path.basename(self.playlist.getCurrent())
+        self.Media = self.vlc_instance.media_new(
+            str(os.path.join(directory_name, file_name))
+        )
+        self.vlc_media_player_instance.set_media(self.Media)
+        self.vlc_media_player_instance.set_xwindow(self.get_handle())
         
         self.piMenu.update()
         self.vlc_media_player_instance.play()
