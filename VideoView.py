@@ -84,11 +84,11 @@ class VideoView(Frame):
 
         elif action == "DecreaseVolume":
             self.volume -= 0.1
-            self.vlc_media_player_instance.set_volume(self.volume)
+            self.vlc_media_player_instance.audio_set_volume(int(self.volume*100))
 
         elif action == "IncreaseVolume":
             self.volume += 0.1
-            self.vlc_media_player_instance.set_volume(self.volume)
+            self.vlc_media_player_instance.audio_set_volume(int(self.volume*100))
 
         elif action == "Previous":
             self.playlist.previous()
