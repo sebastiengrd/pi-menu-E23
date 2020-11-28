@@ -10,7 +10,6 @@ from subprocess import Popen
 import time
 import json
 from View import *
-from FlatButton import *
 from MusicView import *
 from VideoView import *
 

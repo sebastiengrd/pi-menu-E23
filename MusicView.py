@@ -18,19 +18,19 @@ class MusicView(Frame):
     buttons = [
         {
             "label": "Back",
-            "color": "#0091A0",
+            "color": "#3c9bc4",
             "icon": "ico/arrow.left.gif",
             "goToView": "Back"
         },
         {
             "label": "Title",
-            "color": "#0B2F6D",
+            "color": "#3c9bc4",
             "icon": None,
             "goToView": "Title"
         },
         {
             "label": "Decrease Volume",
-            "color": "#0B2F6D",
+            "color": "#2ba887",
             "icon": "ico/minus.gif",
             "goToView": "DecreaseVolume"
         },
@@ -48,25 +48,25 @@ class MusicView(Frame):
         # },
         {
             "label": "Increase Volume",
-            "color": "#0B2F6D",
+            "color": "#2ba887",
             "icon": "ico/add.gif",
             "goToView": "IncreaseVolume"
         },
         {
             "label": "Previous",
-            "color": "#0B2F6D",
+            "color": "#2ba887",
             "icon": "ico/navigate.previous.gif",
             "goToView": "Previous"
         },
         {
             "label": "Play",
-            "color": "#0091A0",
+            "color": "#2ba887",
             "icon": "ico/control.play.gif",
             "goToView": "Play"
         },
         {
             "label": "Next",
-            "color": "#0B2F6D",
+            "color": "#2ba887",
             "icon": "ico/navigate.next.gif",
             "goToView": "Next"
         }
@@ -103,18 +103,12 @@ class MusicView(Frame):
         #initialize each buttons in the frame
         btnCount = 0
         for button in viewConfig["buttons"]:
-            # import the image 
-            image = None
-            if button["icon"] != None:
-                # keep reference of PhotoImage to prevent destruction of the object
-                self.images[button["icon"]] = PhotoImage(file=button["icon"])
-                image = self.images[button["icon"]]
-
             # Initialize
             b = FlatButton(
-                self,
+                imagePath=button["icon"],
+                parent=self,
                 text=button["label"],
-                image=image,
+                color=button["color"],
                 command=lambda view=button["goToView"] : self.btnPressed(view))
             
             self.buttonObjects.append(b)
@@ -123,10 +117,7 @@ class MusicView(Frame):
             if button["goToView"] == "Title":
                 self.titleButtonIdx = btnCount
 
-            # Initialize the color of the button
-            b.set_color(button["color"])
-
-            # add buton to the grid
+            # add button to the grid
             b.grid(
                 row=int(floor(btnCount / cols)),
                 column=int(btnCount % cols) + (1 if button["goToView"] == "Next" else 0),
