@@ -74,6 +74,8 @@ class VideoView(Frame):
         self.playFilm()
 
         self.create_control_panel(viewConfig)
+        self.piMenu.isVideoPlaying = True
+        
 
     # When a button is pressed, this function is called
 
@@ -95,7 +97,16 @@ class VideoView(Frame):
             self.playFilm()
 
         elif action == "Play":
-            self.playFilm()
+            # if we want to play
+            if not self.piMenu.isVideoPlaying:
+                self.playFilm()
+                print("play")
+            else:
+                print("stop")
+                self.vlc_media_player_instance.stop()
+
+            self.piMenu.isVideoPlaying = not self.piMenu.isVideoPlaying
+            self.updatePlayButton()       
             # self.updatePlayButton()
 
         elif action == "Next":
@@ -139,6 +150,11 @@ class VideoView(Frame):
                 color=button["color"],
                 command=lambda view=button["goToView"] : self.btnPressed(view))
             
+            self.buttonObjects.append(b)
+            if button["goToView"] == "Play":
+                self.playButtonIdx = btnCount
+                b["text"] = "Stop"
+            
             # add buton to the grid
             b.grid(
                 row=int(floor(btnCount / cols)),
@@ -159,3 +175,9 @@ class VideoView(Frame):
             control_panel.rowconfigure(y, weight=1)
 
         control_panel.pack(fill=tk.BOTH, expand=True)
+
+    def updatePlayButton(self):
+        if not self.piMenu.isVideoPlaying:
+            self.buttonObjects[self.playButtonIdx].config(text="Play")
+        else:
+            self.buttonObjects[self.playButtonIdx].config(text="Stop")

@@ -28,6 +28,7 @@ class PiMenu(Frame):
         self.path = os.path.dirname(os.path.realpath(sys.argv[0]))
         self.parseConfigFile("config.json")
         self.isPlaying = False
+        self.isVideoPlaying = False
         self.initialize()
 
 
