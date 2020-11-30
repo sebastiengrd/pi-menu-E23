@@ -18,19 +18,19 @@ class MusicView(Frame):
     buttons = [
         {
             "label": "Back",
-            "color": "#3c9bc4",
+            "color": "#0091A0",
             "icon": "ico/arrow.left.gif",
             "goToView": "Back"
         },
         {
             "label": "Title",
-            "color": "#3c9bc4",
+            "color": "#0091A0",
             "icon": None,
             "goToView": "Title"
         },
         {
             "label": "Decrease Volume",
-            "color": "#2ba887",
+            "color": "#0B2F6D",
             "icon": "ico/minus.gif",
             "goToView": "DecreaseVolume"
         },
@@ -48,25 +48,25 @@ class MusicView(Frame):
         # },
         {
             "label": "Increase Volume",
-            "color": "#2ba887",
+            "color": "#0B2F6D",
             "icon": "ico/add.gif",
             "goToView": "IncreaseVolume"
         },
         {
             "label": "Previous",
-            "color": "#2ba887",
+            "color": "#0B2F6D",
             "icon": "ico/navigate.previous.gif",
             "goToView": "Previous"
         },
         {
             "label": "Play",
-            "color": "#2ba887",
+            "color": "#0B2F6D",
             "icon": "ico/control.play.gif",
             "goToView": "Play"
         },
         {
             "label": "Next",
-            "color": "#2ba887",
+            "color": "#0B2F6D",
             "icon": "ico/navigate.next.gif",
             "goToView": "Next"
         }
