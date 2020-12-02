@@ -1,6 +1,7 @@
 from tkinter import Button, PhotoImage
 import tkinter.constants as TkC
-
+from tkinter import *  # Note: lower case "t" in tkinter
+from tkinter import font as tkFont  # for convenience
 
 class FlatButton(Button):
     """ 
@@ -14,6 +15,9 @@ class FlatButton(Button):
 
         super().__init__(parent, image=self.image, **kw)
 
+        helv36 = tkFont.Font(family='Helvetica', size=25, weight='bold')
+        self['font'] = helv36
+        
         self.config(
             compound=TkC.TOP,
             relief=TkC.FLAT,

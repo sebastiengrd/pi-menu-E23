@@ -29,6 +29,9 @@ class PiMenu(Frame):
         self.parseConfigFile("config.json")
         self.isPlaying = False
         self.isVideoPlaying = False
+
+        self.parent.option_add('*Font', '1000')
+
         self.initialize()
 
 
