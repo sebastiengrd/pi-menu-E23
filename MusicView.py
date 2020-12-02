@@ -139,6 +139,8 @@ class MusicView(Frame):
     def pressedKey(self, k):
         if(k.keysym == "p") :
             self.btnPressed("Play")
+        elif(k.keysym == "b") :
+            self.btnPressed("Back")
         elif(k.keysym == "Left") :
             self.btnPressed("Previous")
         elif(k.keysym == "Right") :

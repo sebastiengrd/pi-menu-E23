@@ -86,6 +86,8 @@ class VideoView(Frame):
 
         self.canvas = tk.Canvas(self.videopanel, background="black")
         self.canvas.bind("<Button-1>", self.videoPanelPressed)
+        self.canvas.bind("<Key>", lambda i : self.pressedKey(i))
+
         self.videopanel.bind("<Button-1>", self.videoPanelPressed)
         self.canvas.focus_set()
         self.canvas.pack(fill=tk.BOTH,expand=1)
@@ -97,6 +99,20 @@ class VideoView(Frame):
         
 
     # When a button is pressed, this function is called
+    def pressedKey(self, k):
+        if(k.keysym == "p") :
+            self.btnPressed("Play")
+        elif(k.keysym == "b") :
+            self.btnPressed("Back")
+        elif(k.keysym == "Left") :
+            self.btnPressed("Previous")
+        elif(k.keysym == "Right") :
+            self.btnPressed("Next")
+        elif(k.keysym == "KP_Add" or k.keysym == "equal" or k.keysym == "Up"):
+            self.btnPressed("IncreaseVolume")
+        elif(k.keysym == "KP_Subtract" or k.keysym == "minus" or k.keysym == "Down"):
+            self.btnPressed("DecreaseVolume")
+        print(k)
 
     def btnPressed(self, action):
         if action == "Back":
