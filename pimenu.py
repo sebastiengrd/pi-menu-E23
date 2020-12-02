@@ -135,7 +135,7 @@ class PiMenu(Frame):
 
 def main():
     root = Tk()
-    root.geometry("1280x500+0+0")
+    root.geometry("1480x700+0+0")
     root.wm_title('PiMenu')
     if len(sys.argv) > 1 and sys.argv[1] == 'fs':
         root.wm_attributes('-fullscreen', True)
