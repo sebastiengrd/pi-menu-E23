@@ -11,7 +11,7 @@ class MusicView(Frame):
     """
     playlist = Playlist("playlist/")
     
-    volume = 0.7
+    volume = 0.2
     isPlaying = False
     # creating vlc media player object 
     mediaPlayer = vlc.MediaPlayer() 
