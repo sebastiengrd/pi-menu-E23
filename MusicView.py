@@ -87,6 +87,10 @@ class MusicView(Frame):
 
     def initialize(self, viewConfig):
         
+
+        self.bind("<Key>", lambda i : self.pressedKey(i))
+        self.focus_set()
+
         
         # calculate tile distribution
         itemsNumber = len(viewConfig["buttons"])
@@ -132,6 +136,19 @@ class MusicView(Frame):
 
         # if music is already playing then modify button
         self.updatePlayButton()
+    def pressedKey(self, k):
+        if(k.keysym == "p") :
+            self.btnPressed("Play")
+        elif(k.keysym == "Left") :
+            self.btnPressed("Previous")
+        elif(k.keysym == "Right") :
+            self.btnPressed("Next")
+        elif(k.keysym == "KP_Add" or k.keysym == "equal" or k.keysym == "Up"):
+            self.btnPressed("IncreaseVolume")
+        elif(k.keysym == "KP_Subtract" or k.keysym == "minus" or k.keysym == "Down"):
+            self.btnPressed("DecreaseVolume")
+        print(k)
+
 
     # When a button is pressed, this function is called
     def btnPressed(self, action):
